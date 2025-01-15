@@ -1,9 +1,9 @@
 'use client';
 
+import { useSession } from '@/app/session-store-provider';
 import { FeedBlogCard } from '@/components/blog/cards/FeedBlogCard';
 import { FeedBlogCardListSkeleton } from '@/components/skeletons/blogSkeleton';
 import useGetBookmarkedBlogs from '@/hooks/blog/useGetBookmarkedBlogs';
-import { useSession } from 'next-auth/react';
 
 export const Bookmarks = () => {
   const { status } = useSession();

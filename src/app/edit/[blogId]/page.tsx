@@ -5,6 +5,7 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 
+import { useSession } from '@/app/session-store-provider';
 import { EditorProps } from '@/components/editor';
 import Container from '@/components/layout/Container';
 import { Loader } from '@/components/loader';
@@ -16,7 +17,6 @@ import { WSS_URL } from '@/constants/api';
 import useGetDraftBlogDetail from '@/hooks/blog/useGetDraftBlogDetail';
 import axiosInstance from '@/services/api/axiosInstance';
 import { OutputData } from '@editorjs/editorjs';
-import { useSession } from 'next-auth/react';
 import { mutate } from 'swr';
 
 // Dynamically import the Editor component to avoid server-side rendering issues
@@ -44,8 +44,8 @@ const EditPage = ({ params }: { params: { blogId: string } }) => {
   const { blog, isLoading } = useGetDraftBlogDetail(blogId);
 
   // Function to create and manage WebSocket connection
-  const createWebSocket = useCallback((blogId: string, token: string) => {
-    const ws = new WebSocket(`${WSS_URL}/blog/draft/${blogId}?token=${token}`);
+  const createWebSocket = useCallback((blogId: string) => {
+    const ws = new WebSocket(`${WSS_URL}/blog/draft/${blogId}`);
 
     ws.onopen = () => {
       console.log('WebSocket connection opened');
@@ -110,8 +110,8 @@ const EditPage = ({ params }: { params: { blogId: string } }) => {
 
   // Create WebSocket connection when authToken is available
   useEffect(() => {
-    if (session?.user.token) {
-      const cleanup = createWebSocket(blogId, session.user.token);
+    if (session?.user) {
+      const cleanup = createWebSocket(blogId);
 
       // Listen for beforeunload event to close the WebSocket connection
       const handleBeforeUnload = () => {
@@ -125,7 +125,7 @@ const EditPage = ({ params }: { params: { blogId: string } }) => {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       };
     }
-  }, [session?.user.token, blogId, createWebSocket]);
+  }, [session?.user, blogId, createWebSocket]);
 
   // Set editor data based on the source
   useEffect(() => {
@@ -141,7 +141,7 @@ const EditPage = ({ params }: { params: { blogId: string } }) => {
       webSocket.send(JSON.stringify(formattedData));
       setIsSaving(true); // Set saving status when data is sent
     }
-  }, [data, webSocket, session?.user.account_id, formatData]);
+  }, [data, webSocket, formatData]);
 
   // Handle the publish action
   const handlePublishStep = useCallback(async () => {
@@ -178,7 +178,11 @@ const EditPage = ({ params }: { params: { blogId: string } }) => {
     } finally {
       setBlogPublishLoading(false);
     }
-  }, [data, session?.user.account_id, blogId, formatData, router]);
+  }, [data, blogId, formatData]);
+
+  if (!session) {
+    router.replace('/auth/login');
+  }
 
   return (
     <Container className='min-h-screen px-4 py-5 pb-12'>

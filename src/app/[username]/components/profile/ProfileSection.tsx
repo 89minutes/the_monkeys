@@ -4,9 +4,9 @@ import React from 'react';
 
 import { useParams } from 'next/navigation';
 
+import { useSession } from '@/app/session-store-provider';
 import { FollowButton } from '@/components/user/buttons/followButton';
 import { ProfileCard } from '@/components/user/cards/ProfileCard';
-import { useSession } from 'next-auth/react';
 
 import { ProfileActionsDropdown } from './ProfileActionsDropdown';
 import { TopicsCard } from './TopicsCard';
@@ -18,19 +18,19 @@ export const ProfileSection = () => {
   const { data: session, status } = useSession();
 
   const isAuthenticated =
-    session?.user.username === params.username && status === 'authenticated';
+    session?.user?.username === params.username && status === 'authenticated';
 
   return (
     <>
       <div className='mb-2 flex gap-1 items-center justify-end'>
         <ProfileActionsDropdown username={params.username} />
 
-        {params.username !== session?.user.username &&
+        {params.username !== session?.user?.username &&
           status === 'authenticated' && (
             <FollowButton username={params.username} />
           )}
 
-        {isAuthenticated && <UpdateDialog />}
+        {isAuthenticated && session.user && <UpdateDialog data={session} />}
       </div>
 
       <ProfileCard isAuthenticated={isAuthenticated} />

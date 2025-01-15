@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { useSession } from '@/app/session-store-provider';
 import PasswordInput from '@/components/input/PasswordInput';
 import { Loader } from '@/components/loader';
 import { Button } from '@/components/ui/button';
@@ -28,20 +29,32 @@ import { z } from 'zod';
 export default function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
+  const { update } = useSession();
 
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     setLoading(true);
 
-    const callbackURL = params.get('callback-url');
-
+    const callbackURL = params.get('callbackURL');
     try {
-      await login(values);
+      const loginResponse = await login(values);
+      update({
+        status: 'authenticated',
+        data: { user: loginResponse },
+      });
+
+      if (callbackURL) {
+        router.replace(callbackURL);
+      }
 
       toast({
         variant: 'success',
@@ -49,12 +62,9 @@ export default function LoginForm() {
         description: 'You have successfully logged in. Welcome back!',
       });
 
-      if (callbackURL) {
-        router.replace('/' + callbackURL);
-      }
-
-      router.replace('/');
+      router.replace('/feed');
     } catch (err) {
+      console.log(err);
       toast({
         variant: 'error',
         title: 'Login Error',
@@ -81,6 +91,7 @@ export default function LoginForm() {
                   className={cn(
                     !!fieldState.error && 'dark:border-red-500 border-red-600'
                   )}
+                  autoFocus
                   {...field}
                 />
               </FormControl>

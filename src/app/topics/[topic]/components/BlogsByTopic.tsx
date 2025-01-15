@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
+import { useSession } from '@/app/session-store-provider';
 import { FeedBlogCard } from '@/components/blog/cards/FeedBlogCard';
 import Icon from '@/components/icon';
 import { FeedBlogCardListSkeleton } from '@/components/skeletons/blogSkeleton';
@@ -11,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { getBlogsByTopicSchema } from '@/lib/schema/blog';
 import axiosInstanceNoAuthV2 from '@/services/api/axiosInstanceNoAuthV2';
 import { GetBlogsByTopics } from '@/services/blog/blogTypes';
-import { useSession } from 'next-auth/react';
 
 export const BlogsByTopic = ({ topic }: { topic: string }) => {
   const { status } = useSession();
