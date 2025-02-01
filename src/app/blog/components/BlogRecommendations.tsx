@@ -26,7 +26,7 @@ export const BlogRecommendations = ({ blogId }: { blogId: string }) => {
       </h4>
 
       <div className='divide-y-1 divide-foreground-light dark:divide-foreground-dark'>
-        {blogs?.blogs.length ? (
+        {blogs?.blogs?.length ? (
           blogs?.blogs
             .filter((blog) => blog?.blog_id !== blogId)
             .slice(0, 6)

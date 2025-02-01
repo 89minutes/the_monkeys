@@ -43,7 +43,7 @@ export const UpdateProfileDialog = () => {
       return;
     }
 
-    if (acceptedFiles.length > 1) {
+    if (acceptedFiles?.length > 1) {
       setUploadError('Error: Please upload a single file at a time.');
       return;
     }

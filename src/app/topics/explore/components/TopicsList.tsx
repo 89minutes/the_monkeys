@@ -13,7 +13,7 @@ export const TopicsList = ({ topics = [] }: { topics?: string[] }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { data: session } = useSession();
   const displayedTopics = showAll ? topics : topics.slice(0, 6);
-  const totalTopics = topics.length;
+  const totalTopics = topics?.length;
 
   const { user, isLoading, isError } = useUser(session?.user?.username);
   const followedTopics = user?.topics || [];

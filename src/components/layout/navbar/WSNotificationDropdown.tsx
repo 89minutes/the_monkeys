@@ -149,7 +149,7 @@ const WSNotificationDropdown = () => {
           <Separator className='mt-1 mb-2' />
 
           <div className='mb-2 space-y-1'>
-            {notificationArray.length ? (
+            {notificationArray?.length ? (
               notificationArray.slice(0, 5).map((notificationItem) => (
                 <div
                   key={notificationItem.id}

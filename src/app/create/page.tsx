@@ -131,7 +131,11 @@ const CreatePage = () => {
 
   const handlePublishStep = useCallback(() => {
     setPublishedBlogLoading(true);
-    if (!data || data.blocks.length === 0 || data.blocks[0].type !== 'header') {
+    if (
+      !data ||
+      data?.blocks?.length === 0 ||
+      data?.blocks[0]?.type !== 'header'
+    ) {
       setPublishedBlogLoading(false);
       toast({
         variant: 'destructive',

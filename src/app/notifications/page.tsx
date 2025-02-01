@@ -44,15 +44,17 @@ const NotificationsPage = () => {
       />
 
       <div className='w-full space-y-2'>
-        {notifications?.notifications.notification.length ? (
-          notifications?.notifications.notification.map((notificationItem) => {
-            return (
-              <NotificationCard
-                key={notificationItem.id}
-                notificationData={notificationItem}
-              />
-            );
-          })
+        {notifications?.notifications?.notification?.length ? (
+          notifications?.notifications?.notification?.map(
+            (notificationItem) => {
+              return (
+                <NotificationCard
+                  key={notificationItem.id}
+                  notificationData={notificationItem}
+                />
+              );
+            }
+          )
         ) : (
           <p className='col-span-2 sm:col-span-3 text-center opacity-80'>
             No notifications yet.

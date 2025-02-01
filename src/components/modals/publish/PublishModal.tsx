@@ -144,11 +144,11 @@ const PublishModal = ({
                       <p className='font-dm_sans text-sm'>
                         <span
                           className={twMerge(
-                            selectedTopics.length > BLOG_TOPICS_MAX_COUNT &&
+                            selectedTopics?.length > BLOG_TOPICS_MAX_COUNT &&
                               'text-alert-red'
                           )}
                         >
-                          {selectedTopics.length}
+                          {selectedTopics?.length}
                         </span>
                         {' / '}
                         {BLOG_TOPICS_MAX_COUNT}

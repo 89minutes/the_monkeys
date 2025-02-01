@@ -27,8 +27,8 @@ const ActivityPage = ({ searchParams }: { searchParams: { user: string } }) => {
 
   return (
     <div className='px-4'>
-      {activities?.response.length ? (
-        activities?.response.slice(0, 15).map((activity) => {
+      {activities?.response?.length ? (
+        activities?.response?.slice(0, 15).map((activity) => {
           return (
             <div key={activity?.timestamp.toString()} className='w-fit group'>
               <ActivityCard activity={activity} />

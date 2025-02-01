@@ -35,7 +35,7 @@ export const TopicsCard = () => {
 
       <Separator className='mt-1 mb-3' />
 
-      {user && user.topics && user.topics.length > 0 ? (
+      {user && user?.topics && user?.topics?.length > 0 ? (
         <div className='mt-2 flex flex-wrap gap-1'>
           {user.topics
             ?.slice(0, maxTopicsShow)

@@ -20,7 +20,7 @@ export const LatestBlogs = () => {
         <p className='text-sm text-center opacity-80'>No blogs available.</p>
       ) : (
         blogs?.blogs.map((blog) => {
-          return blog.blog.blocks.length < 5 ? null : (
+          return blog?.blog?.blocks?.length < 5 ? null : (
             <FeedBlogCard key={blog.blog_id} blog={blog} />
           );
         })
