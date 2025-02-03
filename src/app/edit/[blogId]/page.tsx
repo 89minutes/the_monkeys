@@ -5,6 +5,7 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 
+import { useSession } from '@/app/session-store-provider';
 import { EditorProps } from '@/components/editor';
 import Icon from '@/components/icon';
 import { Loader } from '@/components/loader';
@@ -16,7 +17,6 @@ import { WSS_URL_V2 } from '@/constants/api';
 import useGetDraftBlogDetail from '@/hooks/blog/useGetDraftBlogDetail';
 import axiosInstance from '@/services/api/axiosInstance';
 import { OutputData } from '@editorjs/editorjs';
-import { useSession } from 'next-auth/react';
 import { mutate } from 'swr';
 
 const Editor = dynamic(() => import('@/components/editor'), {
@@ -173,6 +173,7 @@ const EditPage = ({ params }: { params: { blogId: string } }) => {
     if (webSocket && webSocket.readyState === WebSocket.OPEN && data) {
       const formattedData = formatData(data, accountId);
       webSocket.send(JSON.stringify(formattedData));
+
       setIsSaving(true); // Set saving status when data is sent
     }
 

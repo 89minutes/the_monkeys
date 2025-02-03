@@ -4,12 +4,12 @@ import React from 'react';
 
 import { useParams } from 'next/navigation';
 
+import { useSession } from '@/app/session-store-provider';
 import { ProfileCardSkeleton } from '@/components/skeletons/profileSkeleton';
 import { FollowButton } from '@/components/user/buttons/followButton';
 import { ProfileCard } from '@/components/user/cards/ProfileCard';
 import { ShareProfileDialog } from '@/components/user/dialogs/ShareProfileDialog';
 import useUser from '@/hooks/user/useUser';
-import { useSession } from 'next-auth/react';
 
 import UserNotFound from '../../UserNotFound';
 import { ProfileActionsDropdown } from './ProfileActionsDropdown';
